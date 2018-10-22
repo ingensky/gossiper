@@ -1,79 +1,62 @@
 package edu.sky.gossiper.controller;
 
-import edu.sky.gossiper.util.exception.NotFoundException;
+import com.fasterxml.jackson.annotation.JsonView;
+import edu.sky.gossiper.domain.Message;
+import edu.sky.gossiper.domain.Views;
+import edu.sky.gossiper.repository.MessageRepository;
+import org.springframework.beans.BeanUtils;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.*;
-import java.util.concurrent.atomic.AtomicInteger;
+import java.time.LocalDateTime;
+import java.util.List;
 
 @RestController
 @RequestMapping("message")
 public class MessageController {
 
-    private AtomicInteger counter = new AtomicInteger(10);
-
-    private List<Map<String, String>> messages = new ArrayList<Map<String, String>>() {{
-        add(new HashMap<String, String>() {{
-            put("id", "1");
-            put("text", "first message");
-        }});
-        add(new HashMap<String, String>() {{
-            put("id", "2");
-            put("text", "second message");
-        }});
-        add(new HashMap<String, String>() {{
-            put("id", "3");
-            put("text", "third message");
-        }});
-    }};
-
+    @Autowired
+    private MessageRepository messageRepository;
 
     @GetMapping
-    public List<Map<String, String>> list() {
-        return messages;
+    @JsonView(Views.IdName.class)
+    public List<Message> list() {
+        return messageRepository.findAll();
     }
 
     @GetMapping("{id}")
-    public Map<String, String> getMessage(
-            @PathVariable String id
+    @JsonView(Views.FullMessage.class)
+    public Message getMessage(
+            @PathVariable("id") Message message
     ) {
-        return getMessageById(id);
+        return message;
     }
 
     @PostMapping
-    public Map<String, String> create(
-            @RequestBody Map<String, String> message
+    public Message create(
+            @RequestBody Message message
     ) {
-        message.put("id", String.valueOf(counter.incrementAndGet()));
-        messages.add(message);
-        return message;
-
+        message.setCreationTimestamp(LocalDateTime.now());
+        return  messageRepository.save(message);
     }
 
 
     @PutMapping("{id}")
-    public Map<String, String> update(
-            @PathVariable String id,
-            @RequestBody Map<String, String> message
+    public Message update(
+            @PathVariable("id") Message messageFromDB,
+            @RequestBody Message message
     ) {
-        Map<String, String> messageById = getMessageById(id);
-        messageById.putAll(message);
-        messageById.put("id", id);
-        return messageById;
+
+        BeanUtils.copyProperties(message, messageFromDB, "id");
+        return messageRepository.save(messageFromDB);
     }
 
     @DeleteMapping("{id}")
     public void deleteMessage(
-            @PathVariable String id
+            @PathVariable("id") Message message
     ) {
-        Map<String, String> messageById = getMessageById(id);
-        messages.remove(messageById);
+        messageRepository.delete(message);
     }
 
-    private Map<String, String> getMessageById(@PathVariable String id) {
-        return messages.stream()
-                .filter(e -> e.get("id").equals(id))
-                .findFirst()
-                .orElseThrow(NotFoundException::new);
-    }
+
 }

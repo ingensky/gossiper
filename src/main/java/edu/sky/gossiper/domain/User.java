@@ -1,16 +1,18 @@
 package edu.sky.gossiper.domain;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.Data;
 
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.Table;
+import java.io.Serializable;
 import java.time.LocalDateTime;
 
 @Entity
 @Table(name = "usr")
 @Data
-public class User {
+public class User implements Serializable {
 
     @Id
     public String id;
@@ -19,6 +21,7 @@ public class User {
 
     private String email;
 
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm:ss")
     private LocalDateTime lastVisit;
 
 }

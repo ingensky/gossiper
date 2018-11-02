@@ -6,6 +6,8 @@ import edu.sky.gossiper.domain.Views;
 import edu.sky.gossiper.repository.MessageRepository;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.messaging.handler.annotation.MessageMapping;
+import org.springframework.messaging.handler.annotation.SendTo;
 import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDateTime;
@@ -19,7 +21,7 @@ public class MessageController {
     private MessageRepository messageRepository;
 
     @GetMapping
-    @JsonView(Views.IdName.class)
+    @JsonView(Views.FullMessage.class)
     public List<Message> list() {
         return messageRepository.findAll();
     }
@@ -56,6 +58,13 @@ public class MessageController {
             @PathVariable("id") Message message
     ) {
         messageRepository.delete(message);
+    }
+
+    @MessageMapping("/changeMessage")
+    @SendTo("/topic/activity")
+    public Message change(Message message) {
+        message.setCreationTimestamp(LocalDateTime.now());
+        return messageRepository.save(message);
     }
 
 

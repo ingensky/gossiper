@@ -1,8 +1,12 @@
 <template>
-    <div>
-        <input type="text" placeholder="put your msg here.." v-model="text"/>
-        <input type="button" value="Save" @click="save"/>
-    </div>
+    <v-layout row>
+        <v-text-field
+                label="Enter message"
+                placeholder="put your msg here.." v-model="text"/>
+        <v-btn @click="save">
+            save
+        </v-btn>
+    </v-layout>
 </template>
 
 <script>

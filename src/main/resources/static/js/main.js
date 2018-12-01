@@ -4,9 +4,9 @@ import App from 'pages/App.vue'
 
 import {connect} from './util/ws'
 
-// if (frontData.profile) {
-//     connect();
-// }
+if (frontData.profile) {
+    connect();
+}
 
 Vue.use(VueResource)
 

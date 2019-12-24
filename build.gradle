@@ -1,13 +1,13 @@
 buildscript {
-	ext {
-		springBootVersion = '2.0.6.RELEASE'
-	}
-	repositories {
-		mavenCentral()
-	}
-	dependencies {
-		classpath("org.springframework.boot:spring-boot-gradle-plugin:${springBootVersion}")
-	}
+    ext {
+        springBootVersion = '2.0.6.RELEASE'
+    }
+    repositories {
+        mavenCentral()
+    }
+    dependencies {
+        classpath("org.springframework.boot:spring-boot-gradle-plugin:${springBootVersion}")
+    }
 }
 
 apply plugin: 'java'
@@ -20,24 +20,25 @@ version = '0.0.1-SNAPSHOT'
 sourceCompatibility = 1.8
 
 repositories {
-	mavenCentral()
+    mavenCentral()
 }
 
 
 dependencies {
-	implementation('org.springframework.boot:spring-boot-starter-web')
-	runtimeOnly('org.springframework.boot:spring-boot-devtools')
+    implementation('org.springframework.boot:spring-boot-starter-web')
+    runtimeOnly('org.springframework.boot:spring-boot-devtools')
 
-	compile('org.springframework.boot:spring-boot-starter-security')
-	compile('org.springframework.security.oauth.boot:spring-security-oauth2-autoconfigure:2.0.0.RELEASE')
+    compile('org.springframework.boot:spring-boot-starter-security')
+    compile('org.springframework.security.oauth.boot:spring-security-oauth2-autoconfigure:2.0.0.RELEASE')
 
-	implementation('org.springframework.boot:spring-boot-starter-thymeleaf')
-	compile("org.springframework.boot:spring-boot-starter-websocket")
-	implementation('org.springframework.session:spring-session-jdbc')
+    implementation('org.springframework.boot:spring-boot-starter-thymeleaf')
+    compile("org.springframework.boot:spring-boot-starter-websocket")
+    implementation('org.springframework.session:spring-session-jdbc')
 
-	implementation('org.springframework.boot:spring-boot-starter-data-jpa')
-	implementation('org.postgresql:postgresql')
-	implementation('org.projectlombok:lombok')
-	implementation('javax.xml.bind:jaxb-api')
-	testImplementation('org.springframework.boot:spring-boot-starter-test')
+    implementation('org.springframework.boot:spring-boot-starter-data-jpa')
+    implementation('org.postgresql:postgresql')
+    implementation('org.projectlombok:lombok')
+    implementation('org.jsoup:jsoup:1.11.3')
+    implementation('javax.xml.bind:jaxb-api')
+    testImplementation('org.springframework.boot:spring-boot-starter-test')
 }

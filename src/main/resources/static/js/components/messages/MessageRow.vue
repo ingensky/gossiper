@@ -5,7 +5,11 @@
             {{message.text}}
             {{message.creationTimestamp}}
         </v-card-text>
-                <v-card-actions>
+        <media
+                v-if="message.link"
+                :message="message"
+        ></media>
+        <v-card-actions>
             <v-btn icon @click="edit" small>
                 <v-icon>edit</v-icon>
             </v-btn>
@@ -17,9 +21,12 @@
 </template>
 
 <script>
-    import {mapActions} from 'vuex'
+    import {mapActions} from 'vuex';
+    import Media from "components/media/Media.vue";
+
     export default {
         props: ['message', 'editMessage'],
+        components: {Media},
         methods: {
             ...mapActions(['removeMessageAction']),
             edit() {

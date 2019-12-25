@@ -118,10 +118,12 @@ public class MessageController {
         Elements description = document.select("meta[name$=description], meta[property$=description]");
         Elements cover = document.select("meta[name$=image], meta[property$=image]");
 
+        String coverContent = getContent(cover.first());
+        coverContent = coverContent.startsWith("http") ? coverContent : url + coverContent;
         return new MetaDto(
                 getContent(title.first()),
                 getContent(description.first()),
-                getContent(cover.first())
+                coverContent
         );
     }
 

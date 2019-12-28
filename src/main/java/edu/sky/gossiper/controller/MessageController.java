@@ -2,6 +2,7 @@ package edu.sky.gossiper.controller;
 
 import com.fasterxml.jackson.annotation.JsonView;
 import edu.sky.gossiper.domain.Message;
+import edu.sky.gossiper.domain.User;
 import edu.sky.gossiper.domain.Views;
 import edu.sky.gossiper.dto.EventType;
 import edu.sky.gossiper.dto.MetaDto;
@@ -13,6 +14,7 @@ import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 import org.springframework.beans.BeanUtils;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
 import java.io.IOException;
@@ -56,10 +58,12 @@ public class MessageController {
 
     @PostMapping
     public Message create(
-            @RequestBody Message message
+            @RequestBody Message message,
+            @AuthenticationPrincipal User user
     ) throws IOException {
         message.setCreationTimestamp(LocalDateTime.now());
         fillMeta(message);
+        message.setAuthor(user);
         Message createdMessage = messageRepo.save(message);
         wsSender.accept(EventType.CREATE, createdMessage);
 

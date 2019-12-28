@@ -8,6 +8,7 @@
     <title>Gossiper</title>
     <script th:inline="javascript">
         let frontData = [[${frontData}]];
+        let messages = [# th:utext="${messages}" /];
     </script>
 </head>
 <body>

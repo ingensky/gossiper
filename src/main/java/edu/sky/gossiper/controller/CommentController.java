@@ -1,7 +1,9 @@
 package edu.sky.gossiper.controller;
 
+import com.fasterxml.jackson.annotation.JsonView;
 import edu.sky.gossiper.domain.Comment;
 import edu.sky.gossiper.domain.User;
+import edu.sky.gossiper.domain.Views;
 import edu.sky.gossiper.service.CommentService;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -20,6 +22,7 @@ public class CommentController {
     }
 
     @PostMapping
+    @JsonView(Views.FullMessage.class)
     public Comment create(
             @RequestBody Comment comment,
             @AuthenticationPrincipal User user

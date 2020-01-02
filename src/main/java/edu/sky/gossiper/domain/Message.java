@@ -32,7 +32,7 @@ public class Message {
     private LocalDateTime creationTimestamp;
 
     @ManyToOne
-    @JoinColumn(name = "user_id", nullable = false, updatable = false)
+    @JoinColumn(name = "user_id")
     @JsonView(Views.FullMessage.class)
     private User author;
 

@@ -1,7 +1,6 @@
 package edu.sky.gossiper.domain;
 
-import com.fasterxml.jackson.annotation.JsonFormat;
-import com.fasterxml.jackson.annotation.JsonView;
+import com.fasterxml.jackson.annotation.*;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
@@ -15,12 +14,19 @@ import java.util.List;
 @ToString(of = {"id", "text"})
 @EqualsAndHashCode(of = {"id"})
 @Data
+/*
+Option to eliminate cycle references. Id in json will be passed if object was already initialized
+*/
+@JsonIdentityInfo(
+        property = "id",
+        generator = ObjectIdGenerators.PropertyGenerator.class
+)
 public class Message {
-
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     @JsonView(Views.Id.class)
+//    @JsonProperty("id")
     private Long id;
 
     @JsonView(Views.IdName.class)
@@ -38,6 +44,7 @@ public class Message {
 
     @OneToMany(mappedBy = "message", orphanRemoval = true)
     @JsonView(Views.FullMessage.class)
+//    @JsonManagedReference another way to eliminate backreference
     private List<Comment> comments;
 
     @JsonView(Views.FullMessage.class)

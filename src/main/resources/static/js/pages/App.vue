@@ -34,7 +34,12 @@
     export default {
         computed: mapState(["profile"]),
         methods: {
-            ...mapMutations(['addMessageMutation', 'updateMessageMutation', 'removeMessageMutation']),
+            ...mapMutations([
+                'addMessageMutation',
+                'updateMessageMutation',
+                'removeMessageMutation',
+                'addCommentMutation'
+            ]),
             showMessages(){
                 this.$router.push("/")
             },
@@ -43,6 +48,9 @@
             },
         },
         created() {
+            this.$vuetify.theme.primary = "#FF00FF"
+
+
             addHandler(data => {
                 if (data.objectType === 'MESSAGE') {
                     switch (data.eventType) {
@@ -55,6 +63,14 @@
                         case 'REMOVE':
                             this.removeMessageMutation(data.body)
                             break;
+                        default:
+                            console.log(`EventType "${data.eventType}" is unknown`)
+                    }
+                } else if (data.objectType === 'COMMENT') {
+                    switch (data.eventType) {
+                        case 'CREATE':
+                            this.addCommentMutation(data.body)
+                            break
                         default:
                             console.log(`EventType "${data.eventType}" is unknown`)
                     }

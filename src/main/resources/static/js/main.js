@@ -13,7 +13,10 @@ if (frontData.profile) {
     connect();
 }
 
-Vue.use(Vuetify)
+Vue.use(Vuetify, {
+    theme: {
+    },
+})
 
 new Vue({
     el:'#app',

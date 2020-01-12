@@ -18,8 +18,7 @@ import java.util.List;
 Option to eliminate cycle references. Id in json will be passed if object was already initialized
 */
 @JsonIdentityInfo(
-        property = "id",
-        generator = ObjectIdGenerators.PropertyGenerator.class
+        generator = ObjectIdGenerators.IntSequenceGenerator.class
 )
 public class Message {
 
